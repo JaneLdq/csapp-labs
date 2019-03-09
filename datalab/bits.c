@@ -210,8 +210,13 @@ int isAsciiDigit(int x) {
  *   Rating: 3
  */
 int conditional(int x, int y, int z) {
-  // TODO
-  return 2;
+  // One way to achieve that is to find a way to turn non-zero value 
+  // of a into an all-ones bit pattern: 
+  // a |= a >> 1; a |= a >> 2; a |= a >> 4; a |= a >> 8; a |= a >> 16;
+  // a |= a << 1; a |= a << 2; a |= a << 4; a |= a << 8; a |= a << 16;
+  // return (a & b) | (~a & c)
+  int x = (!x << 31 >> 31); // 0x0 for non-zero, 0xffffffff for zero
+  return (~x & y) | (x & z);
 }
 /* 
  * isLessOrEqual - if x <= y  then return 1, else return 0 
@@ -222,8 +227,7 @@ int conditional(int x, int y, int z) {
  */
 int isLessOrEqual(int x, int y) {
   // -x + y >= 0
-  int add = ~x + 1 + y;
-  return ((add & (1 << 63)) >> 63) & 1;
+  return 2;
 }
 //4
 /* 
@@ -235,7 +239,6 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4 
  */
 int logicalNeg(int x) {
-
   return 2;
 }
 /* howManyBits - return the minimum number of bits required to represent x in
