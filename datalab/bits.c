@@ -215,7 +215,7 @@ int conditional(int x, int y, int z) {
   // a |= a >> 1; a |= a >> 2; a |= a >> 4; a |= a >> 8; a |= a >> 16;
   // a |= a << 1; a |= a << 2; a |= a << 4; a |= a << 8; a |= a << 16;
   // return (a & b) | (~a & c)
-  int x = (!x << 31 >> 31); // 0x0 for non-zero, 0xffffffff for zero
+  x = (!x << 31 >> 31); // 0x0 for non-zero, 0xffffffff for zero
   return (~x & y) | (x & z);
 }
 /* 
