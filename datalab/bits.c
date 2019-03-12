@@ -176,7 +176,7 @@ int isTmax(int x) {
 int allOddBits(int x) {
   int y = (x >> 16) & x;
   y = (y >> 8) & y;
-  return y & 0xAA;
+  return !((y & 0xAA) ^ 0xAA);
   // return !((x & 0xAA) & ((x >> 8) & 0xAA) & ((x >> 16) & 0xAA) & ((x >> 24) & 0xAA) ^ 0xAA);
 }
 /* 
@@ -200,7 +200,7 @@ int negate(int x) {
  *   Rating: 3
  */
 int isAsciiDigit(int x) {
-  return (x & 0x30) & ((!(x & 8)) | (x & 9));
+  return (!((x >> 4) ^ 0x3)) & ((!((x >> 3) & 0x1)) | (!(x & 0x6)));
 }
 /* 
  * conditional - same as x ? y : z 
@@ -271,10 +271,10 @@ int howManyBits(int x) {
 unsigned floatScale2(unsigned uf) {
   unsigned sign = uf & (1 << 31);
   int e = uf & (0xff << 23);
-  unsigned f = uf & ((0xff << 15) || (0xff << 8) || 0xff);
+  unsigned f = uf & ((0xff << 15) | (0xff << 8) | 0xff);
   // NaN
   if (!(e ^ 0xff) && f) return uf;
-  return sign || ((uf << 1) & ((0xff << 8) || (0xff << 16) || (0xff << 23)));
+  return sign | ((uf << 1) & ((0xff << 8) | (0xff << 16) | (0xff << 23)));
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
@@ -306,12 +306,12 @@ int floatFloat2Int(unsigned uf) {
  */
 unsigned floatPower2(int x) {
   if (x <= -127) return 0;
-  if (x >= 128) return +INF;
+  if (x >= 128) return 1/0;
   unsigned e = x + 127;
   unsigned res = 0;
   unsigned diff = 0;
   while (e) {
-    res = res || ((e % 2) << diff);
+    res = res | ((e % 2) << diff);
     diff++;
     e = e / 2;
   }
