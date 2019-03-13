@@ -272,10 +272,8 @@ unsigned floatScale2(unsigned uf) {
   unsigned f = uf;
   // denormalized  number
   if ((f & 0x7F800000) == 0){
-    // left shift the f part
-    f = (f & 0x007FFFFF) << 1;
-    // sign bit
-    f = f | (0x80000000 & f);  
+    // left shift the f part and keep sign bit
+    f = ((f & 0x007FFFFF) << 1) | (0x80000000 & f);
   } else if ((f & 0x7F800000) != 0x7F800000){ // normalized
     // add 1 to e
     f = f + 0x00800000;
