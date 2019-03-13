@@ -269,18 +269,18 @@ int howManyBits(int x) {
  *   Rating: 4
  */
 unsigned floatScale2(unsigned uf) {
-        /* Computer 2*f. If f is a NaN, then return f. */  
-unsigned f = uf;    
-if ((f & 0x7F800000) == 0){  
-        //shift one bit to left  
-                f = ((f & 0x007FFFFF)<<1) | (0x80000000 & f);  
-    }  
-    else if ((f & 0x7F800000) != 0x7F800000){  
-        /* Float has a special exponent. */  
-        /* Increment exponent, effectively multiplying by 2. */  
-        f =f+0x00800000;  
-        }  
-    return f;
+  unsigned f = uf;
+  // denormalized  number
+  if ((f & 0x7F800000) == 0){
+    // left shift the f part
+    f = (f & 0x007FFFFF) << 1;
+    // sign bit
+    f = f | (0x80000000 & f);  
+  } else if ((f & 0x7F800000) != 0x7F800000){ // normalized
+    // add 1 to e
+    f = f + 0x00800000;
+  }  
+  return f;
 }
 /* 
  * floatFloat2Int - Return bit-level equivalent of expression (int) f
