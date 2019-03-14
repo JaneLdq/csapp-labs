@@ -226,8 +226,12 @@ int conditional(int x, int y, int z) {
  *   Rating: 3
  */
 int isLessOrEqual(int x, int y) {
-  // -x + y >= 0
-  return 2;
+  // -x + y
+  int diff = (~x + 1) + y;
+  unsigned sign_diff = (diff >> 31) & 0x1;
+  unsigned sign_x = (x >> 31) & 0x1;
+  unsigned sign_y = (y >> 31) & 0x1; 
+  return ((sign_x ^ sign_y) & sign_x) | (!(sign_y ^ sign_x) & !sign_diff);
 }
 //4
 /* 
@@ -239,7 +243,12 @@ int isLessOrEqual(int x, int y) {
  *   Rating: 4 
  */
 int logicalNeg(int x) {
-  return 2;
+  int bits_16 = (x >> 16) | x;
+  int bits_8 = (bits_16 >> 8) | bits_16;
+  int bits_4 = (bits_8 >> 4) | bits_8;
+  int bits_2 = (bits_4 >> 2) | bits_4;
+  int bits_1 = (bits_2 >> 1) | bits_2;
+  return (~bits_1 & 0x1);
 }
 /* howManyBits - return the minimum number of bits required to represent x in
  *             two's complement
