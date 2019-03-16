@@ -302,7 +302,22 @@ unsigned floatScale2(unsigned uf) {
  *   Rating: 4
  */
 int floatFloat2Int(unsigned uf) {
-  return 2;
+  unsigned s = uf & 0x80000000;
+  unsigned e = uf & 0x7F800000;
+  unsigned f = uf & 0x007FFFFF;
+  // denormalized return zero
+  if (!e) return 0;
+  // NaN or infinity
+  if (!(e ^ 0x7F800000)) return 0x80000000u;
+  // normalized
+  int E = (e >> 23) - 127;
+  if (E < 0) return 0;
+  // out of range
+  if (E > 31) return 0x80000000u;
+  if (E == 31 && !((s >> 31) && !f)) return 0x80000000u;
+  // other
+  unsigned result = (1 << E) + ((E-23) < 0 ? 0 : (f << (E-23)));
+  return (s >> 31) ? -result : result;
 }
 /* 
  * floatPower2 - Return bit-level equivalent of the expression 2.0^x
