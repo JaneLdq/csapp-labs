@@ -263,7 +263,36 @@ int logicalNeg(int x) {
  *  Rating: 4
  */
 int howManyBits(int x) {
-  return 0;
+  int bits_1 = 0x2;
+  int bits_2 = 0xC;
+  int bits_4 = 0xF0;
+  int bits_8 = 0xFF00;
+  int bits_16 = 0xFFFF0000;
+
+  int result = 1;
+  // treat negtive number same as positive
+  x = x ^ (x >> 31); 
+  int num = (!!(x & bits_16)) << 4;
+  result += num;
+  x = x >> num;
+
+  num = (!!(x & bits_8)) << 3;
+  result += num;
+  x = x >> num;
+
+  num = (!!(x & bits_4)) << 2;
+  result += num;
+  x = x >> num;
+
+  num = (!!(x & bits_2)) << 1;
+  result += num;
+  x = x >> num;
+
+  num = !!(x & bits_1);
+  result += num;
+  x = x >> num;
+
+  return result + (x & 1);
 }
 //float
 /* 
@@ -334,16 +363,9 @@ int floatFloat2Int(unsigned uf) {
  */
 unsigned floatPower2(int x) {
   // denorm
-  if (x < -127) return 0;
+  if (x <= -127) return 0;
   // +INF
-  if (x >= 128) return 1/0;
+  if (x >= 128) return 0x7F800000;
   unsigned e = x + 127;
-  unsigned res = 0;
-  unsigned diff = 0;
-  while (e) {
-    res = res | ((e % 2) << diff);
-    diff++;
-    e = e / 2;
-  }
-  return res << 23;
+  return e << 23;
 }
