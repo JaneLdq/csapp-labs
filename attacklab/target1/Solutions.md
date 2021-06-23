@@ -14,7 +14,7 @@
 Here I've tried several solutions.
 
 ---
-For Phase 4 & Phase 5, the solutions are referred to existing solutions online - [CSAPP Experiment 3: attack Lab](https://programmerah.com/csapp-experiment-3-attack-lab-21351/)
+For Phase 4 & Phase 5, the solutions refer to existing solutions online - [CSAPP Experiment 3: attack Lab](https://programmerah.com/csapp-experiment-3-attack-lab-21351/)
 ## Phase 4
 > run `./hex2raw < phase_4_code.txt > phase_4_input.txt`
 > then `./rtarget -q < phase_4_input.txt`
